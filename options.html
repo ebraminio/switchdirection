@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Direction Switch Options Page</title>
+    <style type="text/css">
+        /* Clone the look and feel of "chrome://" pages. */
+        body {
+            margin: 10px;
+            font: 84% Arial, sans-serif;
+        }
+        h1 {
+            font-size: 156%;
+        }
+        h1 img {
+            margin: 1px 5px 0 1px;
+            vertical-align: middle;
+        }
+        h2 {
+            border-top: 1px solid #9cc2ef;
+            background-color: #ebeff9;
+            padding: 3px 5px;
+            font-size: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="chrome://resources/css/checkbox.css" />
+    <script type="text/javascript">
+        /*!
+         * Copyright 2010-2011, ebrahim@byagowi.com
+         * Released under GPL Licenses.
+         */
+
+        "use strict";
+        function loadOptionByName(optionName) {
+            return JSON.parse(localStorage[optionName]);
+        }
+
+        function isStorageInitialized() {
+            try {
+                loadOptionByName("isInitialized");
+                // well, loading of our saved data not raised error,
+                // so storage is initialized before
+                return true;
+            } catch (e) {
+                // loading saved data raised error, seems storage is
+                // not initialized before
+                return false;
+            }
+        }
+
+        function initializeOptionsStorage() {
+            saveOptionByName("simpleSwitch", true); // This is true by default
+            saveOptionByName("pageSwitch", false);
+
+            saveOptionByName("isInitialized", true);
+        }
+
+        function saveOptionByName(optionName, value) {
+            localStorage[optionName] = value.toString();
+        }
+
+        function getCheckboxElement(checkboxName) {
+            return document.getElementById(checkboxName);
+        }
+
+        function refreshBackgroundPage() {
+            chrome.contextMenus.removeAll();
+            chrome.extension.getBackgroundPage().window.location.reload();
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var simpleSwitch = getCheckboxElement("simpleSwitch"),
+                pageSwitch = getCheckboxElement("pageSwitch");
+
+            // initialze options storage if not initialized before
+            if (!isStorageInitialized()) {
+                initializeOptionsStorage();
+            }
+
+            // get options from storage 
+            simpleSwitch.checked = loadOptionByName("simpleSwitch");
+            pageSwitch.checked = loadOptionByName("pageSwitch");
+
+            // add onchange event on checkboxes
+            simpleSwitch.onchange = function () {
+                saveOptionByName("simpleSwitch", simpleSwitch.checked);
+                refreshBackgroundPage();
+            };
+
+            pageSwitch.onchange = function () {
+                saveOptionByName("pageSwitch", pageSwitch.checked);
+                refreshBackgroundPage();
+            };
+        });
+    </script>
+</head>
+<body>
+    <h1>
+        <img src="icon_48.png" alt="icon" />
+        Options Page
+    </h1>
+    <h2>Direction Switch Options Page</h2>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" id="simpleSwitch" />
+            <span>Enable Switch Direction button for edits</span>
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" id="pageSwitch" />
+            <span>Enable Switch Direction button for pages</span>
+        </label>
+    </div>
+</body>
+</html>
