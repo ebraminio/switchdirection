@@ -1,15 +1,17 @@
 {
-   "background_page": "background.html",
-   "description": "Switch Direction in edits, useful for mixed RTL and LTR texts.",
-   "icons": {
-      "128": "icon_128.png",
-      "16": "icon_16.png",
-      "48": "icon_48.png"
-   },
-   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDTgBYxDyD/8OUXqT9L/sSuSnMvp7bdPc2dE30GL/viBrX+U7T9F7GcIYq1/Loxy4T6qyD/FgFMZMbClMvfH5X7QxWQ1cHVTA096bJO/lvVfvj23XUvF9yRCRO9KP+/L3AfzQb6Whw8DlhankIAtSG2XWL+LJGdk8LbtJG2nwalvwIDAQAB",
-   "name": "Switch Direction",
-   "options_page": "options.html",
-   "permissions": [ "contextMenus", "tabs", "http://*/", "https://*/" ],
-   "update_url": "http://clients2.google.com/service/update2/crx",
-   "version": "0.3"
+    "manifest_version": 2,
+    "background": {
+        "scripts": ["background.js"]
+    },
+    "description": "Switch Direction in edits, useful for mixed RTL and LTR texts.",
+    "icons": {
+        "128": "icon_128.png",
+        "48": "icon_48.png",
+        "16": "icon_16.png"
+    },
+    "name": "Switch Direction",
+    "options_page": "options.html",
+    "permissions": [ "contextMenus", "tabs", "<all_urls>" ],
+    "default_locale": "en",
+    "version": "0.4"
 }

@@ -1,0 +1,10 @@
+{
+    "pageSwitchButton" : {
+        "message": "تعویض جهت صفحه",
+        "desciption": "Title of right-click menu button on pages"
+    },
+    "simpleSwitchButton" : {
+        "message": "تعویض جهت متن",
+        "desciption": "Title of right-click menu button on edits"
+    }
+}
