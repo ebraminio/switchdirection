@@ -2,91 +2,92 @@
  * Copyright 2010-2012, ebrahim@byagowi.com
  * Released under GPL Licenses.
  */
-/*global localStorage: false, window: false, chrome: false */
+/*global window: false, localStorage: false, chrome: false */
 
-function loadOptionByName(optionName) {
+(function () {
     "use strict";
-    var savedState = localStorage[optionName];
-    if (savedState === "true") {
-        return true;
+    function loadOption(optionName) {
+        var savedState = localStorage[optionName];
+        if (savedState === "true") {
+            return true;
+        }
+        return false;
     }
-    return false;
-}
 
-function saveOptionByName(optionName, value) {
-    "use strict";
-    localStorage[optionName] = value.toString();
-}
-
-function initializeOptionsStorage() {
-    "use strict";
-    saveOptionByName("simpleSwitch", true); // I prefer this be true by default
-    saveOptionByName("pageSwitch", false);
-    saveOptionByName("ctrlShiftXSwitch", false);
-    saveOptionByName("isInitialized", true);
-}
-
-if (!loadOptionByName("isInitialized")) {
-    initializeOptionsStorage();
-}
-
-// NOTE: this function will be injected to all page.
-var switchDirection = function (element) {
-    "use strict";
-    var currentDirection = window.getComputedStyle(element, null).getPropertyValue("direction");
-
-    element.removeAttribute("dir");
-    if (currentDirection === "rtl") {
-        element.style.setProperty("direction", "ltr", "important");
-    } else {
-        element.style.setProperty("direction", "rtl", "important");
+    function saveOption(optionName, value) {
+        localStorage[optionName] = value.toString();
     }
-};
 
-if (loadOptionByName("pageSwitch") === true) {
-    chrome.contextMenus.create({
-        title: chrome.i18n.getMessage("pageSwitchButton"),
-        contexts: ["page"],
-        onclick: function () {
-            "use strict";
-            chrome.tabs.executeScript(null, {
-                code: "(" + switchDirection + "(document.body))"
-            });
+    // These will be injected to all pages
+    var switchDirection = function (element, dir) {
+        var node, currentDirection;
+        if (element === undefined) {
+            element = window.document.activeElement;
+            if (element.isContentEditable) {
+                // http://stackoverflow.com/a/1211981/1414809
+                node = window.document.getSelection().anchorNode;
+                element = (node.nodeType === 3 ? node.parentNode : node);
+            }
         }
-    });
-}
+        if (dir === undefined) {
+            currentDirection = window.getComputedStyle(element, null).getPropertyValue("direction");
 
-if (loadOptionByName("simpleSwitch") === true) {
-    chrome.contextMenus.create({
-        title: chrome.i18n.getMessage("simpleSwitchButton"),
-        contexts: ["editable"],
-        onclick: function () {
-            "use strict";
-            chrome.tabs.executeScript(null, {
-                code: "(" + switchDirection + "(document.activeElement))"
-            });
+            element.removeAttribute("dir");
+            if (currentDirection === "rtl") {
+                dir = "ltr";
+            } else {
+                dir = "rtl";
+            }
         }
-    });
-}
+        element.style.setProperty("direction", dir, "important");
+    }, addSwitchDirectionEvent = function (switchDirection) {
+        window.addEventListener("keyup", function (event) {
+            // Is Ctrl+Shift+X?
+            var modifier = event.ctrlKey || event.metaKey;
+            if (modifier && event.shiftKey && event.keyCode === 88) {
+                switchDirection();
+            }
+        }, false);
+    };
 
-// NOTE: this function will be injected to all pages.
-var addSwitchDirectionEvent = function (switchDirection) {
-    "use strict";
-    window.addEventListener("keyup", function (event) {
-        var modifier = event.ctrlKey || event.metaKey;
-        if (modifier && event.shiftKey && event.keyCode === 88) {
-            switchDirection(window.document.activeElement); // document of dest. page
-        }
-    }, false);
-};
+    if (!loadOption("isInitialized")) {
+        saveOption("isInitialized", true);
+        saveOption("simpleSwitch", true);
+        saveOption("pageSwitch", false);
+        saveOption("ctrlShiftXSwitch", false);
+    }
 
-if (loadOptionByName("ctrlShiftXSwitch") === true) {
-    chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
-        "use strict";
-        if (changeInfo.status === "complete") {
-            chrome.tabs.executeScript(tabId, {
-                code: "(" + addSwitchDirectionEvent + "(" + switchDirection + "))"
-            });
-        }
-    });
-}
+    if (loadOption("pageSwitch") === true) {
+        chrome.contextMenus.create({
+            title: chrome.i18n.getMessage("pageSwitchButton"),
+            contexts: ["page"],
+            onclick: function () {
+                chrome.tabs.executeScript(null, {
+                    code: "(" + switchDirection + "(document.body))"
+                });
+            }
+        });
+    }
+
+    if (loadOption("simpleSwitch") === true) {
+        chrome.contextMenus.create({
+            title: chrome.i18n.getMessage("simpleSwitchButton"),
+            contexts: ["editable"],
+            onclick: function () {
+                chrome.tabs.executeScript(null, {
+                    code: "(" + switchDirection + "())"
+                });
+            }
+        });
+    }
+
+    if (loadOption("ctrlShiftXSwitch") === true) {
+        chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
+            if (changeInfo.status === "complete") {
+                chrome.tabs.executeScript(tabId, {
+                    code: "(" + addSwitchDirectionEvent + "(" + switchDirection + "))"
+                });
+            }
+        });
+    }
+}());

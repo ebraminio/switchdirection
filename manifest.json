@@ -13,5 +13,5 @@
     "options_page": "options.html",
     "permissions": [ "contextMenus", "tabs", "<all_urls>" ],
     "default_locale": "en",
-    "version": "0.4"
+    "version": "0.5"
 }

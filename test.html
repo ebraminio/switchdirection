@@ -5,14 +5,44 @@
     <title>Switch Direction Testpage</title>
 </head>
 <body>
-    <textarea>Text1</textarea>
-    <textarea dir="rtl">Text2</textarea>
-    <textarea dir="ltr">Text3</textarea>
-    <textarea style="direction:rtl">Text2</textarea>
-    <textarea style="direction:ltr">Text3</textarea>
-    <textarea style="direction:rtl!important">Text2</textarea>
-    <textarea style="direction:ltr!important">Text3</textarea>
-    <textarea style="direction:rtl" dir="ltr">Text4</textarea>
-    <textarea style="direction:ltr" dir="ltr">Text5</textarea>
+    <div id="textareas">
+        <textarea>Text1</textarea>
+        <textarea dir="rtl">Text2</textarea>
+        <textarea dir="ltr">Text3</textarea>
+        <textarea style="direction: rtl;">Text4</textarea>
+        <textarea style="direction: ltr;">Text5</textarea>
+        <textarea style="direction: rtl !important;">Text6</textarea>
+        <textarea style="direction: ltr !important;">Text7</textarea>
+        <textarea style="direction: rtl;" dir="ltr">Text8</textarea>
+        <textarea style="direction: ltr;" dir="ltr">Text9</textarea>
+    </div>
+    <div id="inputs">
+        <input value="Text1" />
+        <input dir="rtl" value="Text2" />
+        <input dir="ltr" value="Text3" />
+        <input style="direction: rtl;" value="Text4" />
+        <input style="direction: ltr;" value="Text5" />
+        <input style="direction: rtl !important;" value="Text6" />
+        <input style="direction: ltr !important;" value="Text7" />
+        <input style="direction: rtl;" dir="ltr" value="Text8" />
+        <input style="direction: ltr;" dir="ltr" value="Text9" />
+    </div>
+    <div id="contenteditables">
+        <div contenteditable>Text1</div>
+        <div contenteditable dir="rtl">Text2</div>
+        <div contenteditable dir="ltr">Text3</div>
+        <div contenteditable style="direction: rtl;">Text4</div>
+        <div contenteditable style="direction: ltr;">Text5</div>
+        <div contenteditable style="direction: rtl !important;">Text6</div>
+        <div contenteditable style="direction: ltr !important;">Text7</div>
+        <div contenteditable style="direction: rtl;" dir="ltr">Text8</div>
+        <div contenteditable style="direction: ltr;" dir="ltr">Text9</div>
+
+        <div contenteditable><div>Text1</div></div>
+        <div contenteditable><div dir="rtl">Text2</div><div dir="ltr">Text3</div></div>
+        <div contenteditable><div style="direction: rtl;">Text4</div><div style="direction: ltr;">Text5</div></div>
+        <div contenteditable><div style="direction: rtl !important;">Text6</div><div style="direction: ltr !important;">Text7</div></div>
+        <div contenteditable><div style="direction: rtl !important;" dir="ltr">Text8</div><div style="direction: ltr !important;" dir="ltr">Text9</div></div>
+    </div>
 </body>
 </html>
