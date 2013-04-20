@@ -1,0 +1,10 @@
+{
+    "pageSwitchButton" : {
+        "message": "שינוי כיווניות דף",
+        "desciption": "Title of right-click menu button on pages"
+    },
+    "simpleSwitchButton" : {
+        "message": "שינוי כיווניות טקסט",
+        "desciption": "Title of right-click menu button on edits"
+    }
+}
