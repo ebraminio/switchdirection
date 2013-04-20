@@ -7,11 +7,7 @@
 (function () {
     "use strict";
     function loadOption(optionName) {
-        var savedState = localStorage[optionName];
-        if (savedState === "true") {
-            return true;
-        }
-        return false;
+        return localStorage[optionName] === "true";
     }
 
     function saveOption(optionName, value) {
@@ -63,6 +59,7 @@
             contexts: ["page"],
             onclick: function () {
                 chrome.tabs.executeScript(null, {
+                    allFrames: true,
                     code: "(" + switchDirection + "(document.body))"
                 });
             }
@@ -75,6 +72,7 @@
             contexts: ["editable"],
             onclick: function () {
                 chrome.tabs.executeScript(null, {
+                    allFrames: true,
                     code: "(" + switchDirection + "())"
                 });
             }
@@ -85,6 +83,7 @@
         chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
             if (changeInfo.status === "complete") {
                 chrome.tabs.executeScript(tabId, {
+                    allFrames: true,
                     code: "(" + addSwitchDirectionEvent + "(" + switchDirection + "))"
                 });
             }
