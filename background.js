@@ -16,13 +16,20 @@
 
     // These will be injected to all pages
     var switchDirection = function (element, dir) {
-        var node, currentDirection;
+        var node, currentDirection, elementType;
         if (element === undefined) {
             element = window.document.activeElement;
+            elementType = element.nodeName.toLowerCase();
+            if (elementType === "iframe") {
+                return; // do interfere with iframes itselves
+            }
             if (element.isContentEditable) {
                 // http://stackoverflow.com/a/1211981/1414809
                 node = window.document.getSelection().anchorNode;
                 element = (node.nodeType === 3 ? node.parentNode : node);
+            } else if (elementType !== "input" && elementType !== "textarea") {
+                // do not intefere with non-content editables and non input or textarea elements
+                return;
             }
         }
         if (dir === undefined) {
@@ -53,7 +60,7 @@
         saveOption("ctrlShiftXSwitch", false);
     }
 
-    if (loadOption("pageSwitch") === true) {
+    if (loadOption("pageSwitch")) {
         chrome.contextMenus.create({
             title: chrome.i18n.getMessage("pageSwitchButton"),
             contexts: ["page"],
@@ -66,7 +73,7 @@
         });
     }
 
-    if (loadOption("simpleSwitch") === true) {
+    if (loadOption("simpleSwitch")) {
         chrome.contextMenus.create({
             title: chrome.i18n.getMessage("simpleSwitchButton"),
             contexts: ["editable"],
@@ -79,7 +86,7 @@
         });
     }
 
-    if (loadOption("ctrlShiftXSwitch") === true) {
+    if (loadOption("ctrlShiftXSwitch")) {
         chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
             if (changeInfo.status === "complete") {
                 chrome.tabs.executeScript(tabId, {
