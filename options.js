@@ -1,10 +1,5 @@
-/*!
- * Copyright 2010-2013, ebrahim@byagowi.com
- * Released under GPL Licenses.
- */
 /*jslint indent: 2*/
-/*global localStorage: false, chrome: false, document: false */
-// require background.js
+/*global localStorage, chrome, document*/
 (function () {
   'use strict';
   function loadOptionByName(optionName) {

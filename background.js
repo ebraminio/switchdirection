@@ -1,11 +1,7 @@
-/*!
- * Copyright 2010-2012, ebrahim@byagowi.com
- * Released under GPL Licenses.
- */
 /*jslint indent: 2*/
-/*global window: false, localStorage: false, chrome: false */
+/*global window, localStorage, chrome*/
 (function () {
-  "use strict";
+  'use strict';
   function loadOption(optionName) {
     return localStorage[optionName] === 'true';
   }
