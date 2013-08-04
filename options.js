@@ -1,39 +1,33 @@
 /*!
- * Copyright 2010-2012, ebrahim@byagowi.com
+ * Copyright 2010-2013, ebrahim@byagowi.com
  * Released under GPL Licenses.
  */
+/*jslint indent: 2*/
 /*global localStorage: false, chrome: false, document: false */
 // require background.js
+(function () {
+  'use strict';
+  function loadOptionByName(optionName) {
+    return localStorage[optionName] === 'true';
+  }
 
-function loadOptionByName(optionName) {
-    "use strict";
-    var savedState = localStorage[optionName];
-    if (savedState === "true") {
-        return true;
-    } 
-    return false;
-}
-
-function saveOptionByName(optionName, value) {
-    "use strict";
+  function saveOptionByName(optionName, value) {
     localStorage[optionName] = value.toString();
-}
+  }
 
-function refreshBackgroundPage() {
-    "use strict";
+  function refreshBackgroundPage() {
     chrome.contextMenus.removeAll();
     chrome.extension.getBackgroundPage().window.location.reload();
-}
+  }
 
-document.addEventListener("DOMContentLoaded", function () {
-    "use strict";
-    var options = document.getElementsByTagName("input"); // our checkboxes
-
+  document.addEventListener('DOMContentLoaded', function () {
+    var options = document.getElementsByTagName('input'); // our checkboxes
     Array.prototype.forEach.call(options, function (x) { // forEach for dom elements
-        x.checked = loadOptionByName(x.id);
-        x.onchange = function () {
-            saveOptionByName(x.id, x.checked);
-            refreshBackgroundPage();
-        };
+      x.checked = loadOptionByName(x.id);
+      x.onchange = function () {
+        saveOptionByName(x.id, x.checked);
+        refreshBackgroundPage();
+      };
     });
-});
+  });
+}());

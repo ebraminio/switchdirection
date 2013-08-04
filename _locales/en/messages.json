@@ -1,10 +1,10 @@
 {
-    "pageSwitchButton" : {
-        "message": "Switch Page Direction",
-        "desciption": "Title of right-click menu button on pages"
-    },
-    "simpleSwitchButton" : {
-        "message": "Switch Text Direction",
-        "desciption": "Title of right-click menu button on edits"
-    }
+  "pageSwitchButton" : {
+    "message": "Switch Page Direction",
+    "desciption": "Title of right-click menu button on pages"
+  },
+  "simpleSwitchButton" : {
+    "message": "Switch Text Direction",
+    "desciption": "Title of right-click menu button on edits"
+  }
 }
